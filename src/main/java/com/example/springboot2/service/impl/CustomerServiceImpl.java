@@ -16,7 +16,7 @@ public class CustomerServiceImpl implements CustomerService {
     CustomerRepository customerRepository;
     @Override
     public void saveCustomer(CustomerDto dto) {
-        Customer customer = new Customer(dto.getId(),dto.getName(), dto.getAddress());
+        Customer customer = new Customer(dto.getId(),dto.getName(), dto.getAddress(),dto.getSalary());
         customerRepository.save(customer);
     }
 }

@@ -9,14 +9,16 @@ public class Customer {
     private String id;
     private String name;
     private String address;
+    private double salary;
 
     public Customer() {
     }
 
-    public Customer(String id, String name, String address) {
+    public Customer(String id, String name, String address, double salary) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.salary = salary;
     }
 
     public String getId() {
@@ -41,5 +43,13 @@ public class Customer {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 }

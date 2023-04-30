@@ -4,14 +4,17 @@ public class CustomerDto {
     private String id;
     private String name;
     private String address;
+    private double salary;
 
     public CustomerDto() {
     }
 
-    public CustomerDto(String id, String name, String address) {
+
+    public CustomerDto(String id, String name, String address, double salary) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.salary = salary;
     }
 
     public String getId() {
@@ -38,12 +41,21 @@ public class CustomerDto {
         this.address = address;
     }
 
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
     @Override
     public String toString() {
         return "CustomerDto{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
+                ", salary=" + salary +
                 '}';
     }
 }
