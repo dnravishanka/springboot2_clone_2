@@ -4,6 +4,7 @@ import com.example.springboot2.dto.CustomerDto;
 import com.example.springboot2.entity.Customer;
 import com.example.springboot2.repository.CustomerRepository;
 import com.example.springboot2.service.CustomerService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,17 +19,31 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    ModelMapper modelMapper;
     @Override
     public void saveCustomer(CustomerDto dto) {
-        Customer customer = new Customer(dto.getId(),dto.getName(), dto.getAddress(),dto.getSalary());
+
+      /*  Customer customer = new Customer(dto.getId(),dto.getName(), dto.getAddress(),dto.getSalary());
+        customerRepository.save(customer);*/
+
+        //   add modelMapper
+        Customer customer = modelMapper.map(dto, Customer.class);
         customerRepository.save(customer);
+
+
     }
 
     @Override
     public void updateCustomer(CustomerDto dto) {
+        /*
         Customer customer = new Customer(dto.getId(),dto.getName(),dto.getAddress(),dto.getSalary());
         customerRepository.save(customer);
 
+*/
+        //add modelMapper
+        Customer customer = modelMapper.map(dto, Customer.class);
+        customerRepository.save(customer);
 
     }
 
@@ -44,8 +59,12 @@ public class CustomerServiceImpl implements CustomerService {
         List<Customer> all = customerRepository.findAll();
         List<CustomerDto> dtoList=new ArrayList<>();
         for (Customer cus:all) {
-            CustomerDto customerDto = new CustomerDto(cus.getId(),cus.getName(),cus.getAddress(),cus.getSalary());
-            dtoList.add(new CustomerDto(cus.getId(),cus.getName(),cus.getAddress(),cus.getSalary()));
+            /*
+            dtoList.add(new CustomerDto(cus.getId(),cus.getName(),cus.getAddress(),cus.getSalary()));*/
+
+            //add modelMapper
+            CustomerDto customerDto = modelMapper.map(cus, CustomerDto.class);
+            dtoList.add(customerDto);
         }
 
        return dtoList;
@@ -55,7 +74,10 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDto searchCustomerByID(String id) {
         Optional<Customer> customerById = customerRepository.findAllById(id);
         Customer customer = customerById.get();
-        CustomerDto customerDto = new CustomerDto(customer.getId(),customer.getName(),customer.getAddress(),customer.getSalary());
+
+        /*CustomerDto customerDto = new CustomerDto(customer.getId(),customer.getName(),customer.getAddress(),customer.getSalary());*/
+        //add modelMapper
+        CustomerDto customerDto = modelMapper.map(customer, CustomerDto.class);
 
         return customerDto;
     }
@@ -64,8 +86,10 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDto SearchCustomerByAddress(String address) {
         Optional<Customer> customerByAddress = customerRepository.findCustomerByAddress(address);
         Customer customer = customerByAddress.get();
-        CustomerDto customerDto = new CustomerDto(customer.getId(),customer.getName(),customer.getAddress(),customer.getSalary());
 
+//        CustomerDto customerDto = new CustomerDto(customer.getId(),customer.getName(),customer.getAddress(),customer.getSalary());
+//add modelMapper
+        CustomerDto customerDto = modelMapper.map(customer, CustomerDto.class);
         return customerDto;
     }
 
@@ -73,8 +97,11 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDto SearchCustomerByName(String name) {
         Optional<Customer> customerByName = customerRepository.findCustomerByName(name);
         Customer customer = customerByName.get();
-        CustomerDto customerDto = new CustomerDto(customer.getId(),customer.getName(),customer.getAddress(),customer.getSalary());
 
+//        CustomerDto customerDto = new CustomerDto(customer.getId(),customer.getName(),customer.getAddress(),customer.getSalary());
+//          add modelMapper
+
+        CustomerDto customerDto = modelMapper.map(customer, CustomerDto.class);
         return customerDto;
     }
 }

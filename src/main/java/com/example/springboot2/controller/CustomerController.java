@@ -14,10 +14,6 @@ public class CustomerController {
 
     @Autowired
     CustomerService customerService;
-//    @GetMapping
-//    public void customerMethod(@RequestBody CustomerDto dto) {
-//        customerService.saveCustomer(dto);
-//    }
 
     @PostMapping
     public void customerSave(@RequestBody CustomerDto dto) {
@@ -37,7 +33,7 @@ public class CustomerController {
 
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<CustomerDto> getAllCustomer() {
         List<CustomerDto> allCustomers = customerService.getAllCustomers();
 
@@ -45,21 +41,21 @@ public class CustomerController {
         return allCustomers;
 
     }
-    @GetMapping
+    @GetMapping("/id")
     public CustomerDto customerSearchById(@RequestParam String id) {
         CustomerDto customerDto = customerService.searchCustomerByID(id);
         return customerDto;
 
     }
 
-    @GetMapping
+    @GetMapping("/address")
     public CustomerDto customerSearchByAddress(String address) {
         CustomerDto customerDto = customerService.SearchCustomerByAddress(address);
         return customerDto;
 
     }
 
-    @GetMapping
+    @GetMapping("/name")
     public CustomerDto customerSearchByName(String name) {
         CustomerDto customerDto = customerService.SearchCustomerByName(name);
         return customerDto;
