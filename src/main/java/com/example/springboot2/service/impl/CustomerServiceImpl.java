@@ -28,6 +28,9 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.save(customer);*/
 
         //   add modelMapper
+        if (customerRepository.existsById(dto.getId())) {
+            throw new RuntimeException("Already such customer exist");
+        }
         Customer customer = modelMapper.map(dto, Customer.class);
         customerRepository.save(customer);
 
@@ -41,6 +44,9 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.save(customer);
 
 */
+        if (!customerRepository.existsById(dto.getId())) {
+            throw new RuntimeException("No such customer to update");
+        }
         //add modelMapper
         Customer customer = modelMapper.map(dto, Customer.class);
         customerRepository.save(customer);
@@ -49,6 +55,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteCustomer(String id) {
+        if (!customerRepository.existsById(id)) {
+            throw new RuntimeException("No such customer to delete");
+        }
     Optional<Customer> customer= customerRepository.findAllById(id);
     customerRepository.delete(customer.get());
 
@@ -57,6 +66,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerDto> getAllCustomers() {
         List<Customer> all = customerRepository.findAll();
+        if (all.isEmpty()) {
+            throw new RuntimeException("Any customer is not exist");
+        }
         List<CustomerDto> dtoList=new ArrayList<>();
         for (Customer cus:all) {
             /*
@@ -72,6 +84,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDto searchCustomerByID(String id) {
+        if (!customerRepository.existsById(id)) {
+            throw new RuntimeException("such customer is not exist");
+        }
         Optional<Customer> customerById = customerRepository.findAllById(id);
         Customer customer = customerById.get();
 
@@ -84,11 +99,17 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDto SearchCustomerByAddress(String address) {
+
+
         Optional<Customer> customerByAddress = customerRepository.findCustomerByAddress(address);
+        if (customerByAddress.isEmpty()) {
+            throw new RuntimeException("There is not any customer in "+address);
+        }
         Customer customer = customerByAddress.get();
 
+
 //        CustomerDto customerDto = new CustomerDto(customer.getId(),customer.getName(),customer.getAddress(),customer.getSalary());
-//add modelMapper
+//        add modelMapper
         CustomerDto customerDto = modelMapper.map(customer, CustomerDto.class);
         return customerDto;
     }
@@ -96,6 +117,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDto SearchCustomerByName(String name) {
         Optional<Customer> customerByName = customerRepository.findCustomerByName(name);
+        if (customerByName.isEmpty()) {
+            throw new RuntimeException("There is not any customer name as " + name);
+        }
         Customer customer = customerByName.get();
 
 //        CustomerDto customerDto = new CustomerDto(customer.getId(),customer.getName(),customer.getAddress(),customer.getSalary());

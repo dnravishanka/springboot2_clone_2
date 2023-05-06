@@ -49,14 +49,14 @@ public class CustomerController {
     }
 
     @GetMapping("/address")
-    public CustomerDto customerSearchByAddress(String address) {
+    public CustomerDto customerSearchByAddress(@RequestParam String address) {
         CustomerDto customerDto = customerService.SearchCustomerByAddress(address);
         return customerDto;
 
     }
 
     @GetMapping("/name")
-    public CustomerDto customerSearchByName(String name) {
+    public CustomerDto customerSearchByName(@RequestParam String name) {
         CustomerDto customerDto = customerService.SearchCustomerByName(name);
         return customerDto;
     }
