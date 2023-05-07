@@ -2,6 +2,7 @@ package com.example.springboot2.service.impl;
 
 import com.example.springboot2.dto.CustomerDto;
 import com.example.springboot2.entity.Customer;
+import com.example.springboot2.handler.AppException;
 import com.example.springboot2.repository.CustomerRepository;
 import com.example.springboot2.service.CustomerService;
 import org.modelmapper.ModelMapper;
@@ -29,7 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         //   add modelMapper
         if (customerRepository.existsById(dto.getId())) {
-            throw new RuntimeException("Already such customer exist");
+            throw new AppException("Already such customer exist");
         }
         Customer customer = modelMapper.map(dto, Customer.class);
         customerRepository.save(customer);
@@ -45,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 */
         if (!customerRepository.existsById(dto.getId())) {
-            throw new RuntimeException("No such customer to update");
+            throw new AppException("No such customer to update");
         }
         //add modelMapper
         Customer customer = modelMapper.map(dto, Customer.class);
@@ -56,7 +57,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomer(String id) {
         if (!customerRepository.existsById(id)) {
-            throw new RuntimeException("No such customer to delete");
+            throw new AppException("No such customer to delete");
         }
     Optional<Customer> customer= customerRepository.findAllById(id);
     customerRepository.delete(customer.get());
@@ -67,7 +68,7 @@ public class CustomerServiceImpl implements CustomerService {
     public List<CustomerDto> getAllCustomers() {
         List<Customer> all = customerRepository.findAll();
         if (all.isEmpty()) {
-            throw new RuntimeException("Any customer is not exist");
+            throw new AppException("Any customer is not exist");
         }
         List<CustomerDto> dtoList=new ArrayList<>();
         for (Customer cus:all) {
@@ -85,7 +86,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDto searchCustomerByID(String id) {
         if (!customerRepository.existsById(id)) {
-            throw new RuntimeException("such customer is not exist");
+            throw new AppException("such customer is not exist");
         }
         Optional<Customer> customerById = customerRepository.findAllById(id);
         Customer customer = customerById.get();
@@ -103,7 +104,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         Optional<Customer> customerByAddress = customerRepository.findCustomerByAddress(address);
         if (customerByAddress.isEmpty()) {
-            throw new RuntimeException("There is not any customer in "+address);
+            throw new AppException("There is not any customer in "+address);
         }
         Customer customer = customerByAddress.get();
 
@@ -118,7 +119,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDto SearchCustomerByName(String name) {
         Optional<Customer> customerByName = customerRepository.findCustomerByName(name);
         if (customerByName.isEmpty()) {
-            throw new RuntimeException("There is not any customer name as " + name);
+            throw new AppException("There is not any customer name as " + name);
         }
         Customer customer = customerByName.get();
 
