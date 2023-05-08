@@ -2,7 +2,10 @@ package com.example.springboot2.controller;
 
 import com.example.springboot2.dto.CustomerDto;
 import com.example.springboot2.service.CustomerService;
+import com.example.springboot2.util.StandResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,48 +19,58 @@ public class CustomerController {
     CustomerService customerService;
 
     @PostMapping
-    public void customerSave(@RequestBody CustomerDto dto) {
+    public ResponseEntity customerSave(@RequestBody CustomerDto dto) {
         customerService.saveCustomer(dto);
+        return new ResponseEntity(new StandResponse(200,"customer Successfully added",null), HttpStatus.OK);
     }
 
     @PutMapping
-    public void customerUpdate(@RequestBody CustomerDto dto) {
+    public ResponseEntity customerUpdate(@RequestBody CustomerDto dto) {
         customerService.updateCustomer(dto);
+        return new ResponseEntity(new StandResponse(200,"customer updated successfully",null),HttpStatus.OK);
+
+
+
 
     }
 
     @DeleteMapping
-    public void customerDelete(@RequestParam String id) {
+    public ResponseEntity customerDelete(@RequestParam String id) {
         customerService.deleteCustomer(id);
+        return new ResponseEntity(new StandResponse(200,"customer "+id+" deleted successfully",null), HttpStatus.OK);
 
 
     }
 
     @GetMapping("/all")
+    public ResponseEntity<CustomerDto> getAllCustomer() {
+        List<CustomerDto> allCustomers = customerService.getAllCustomers();
+        return new ResponseEntity(new StandResponse(200,"true",allCustomers),HttpStatus.OK);
+    }
+    /*
     public List<CustomerDto> getAllCustomer() {
         List<CustomerDto> allCustomers = customerService.getAllCustomers();
-
-
         return allCustomers;
-
-    }
+    }*/
     @GetMapping("/id")
-    public CustomerDto customerSearchById(@RequestParam String id) {
+    public ResponseEntity customerSearchById(@RequestParam String id) {
         CustomerDto customerDto = customerService.searchCustomerByID(id);
-        return customerDto;
+
+        return new ResponseEntity(new StandResponse(200,"customer "+id+" is available",customerDto),HttpStatus.OK);
 
     }
 
     @GetMapping("/address")
-    public CustomerDto customerSearchByAddress(@RequestParam String address) {
+    public ResponseEntity customerSearchByAddress(@RequestParam String address) {
         CustomerDto customerDto = customerService.SearchCustomerByAddress(address);
-        return customerDto;
+
+        return new ResponseEntity(new StandResponse(200,address+" customers are",customerDto),HttpStatus.OK);
 
     }
 
     @GetMapping("/name")
-    public CustomerDto customerSearchByName(@RequestParam String name) {
+    public ResponseEntity customerSearchByName(@RequestParam String name) {
         CustomerDto customerDto = customerService.SearchCustomerByName(name);
-        return customerDto;
+        return new ResponseEntity(new StandResponse(200,"true",customerDto),HttpStatus.OK);
     }
 }
