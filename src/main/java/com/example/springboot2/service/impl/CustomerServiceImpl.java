@@ -129,4 +129,26 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerDto customerDto = modelMapper.map(customer, CustomerDto.class);
         return customerDto;
     }
+
+    @Override
+    public List<CustomerDto> searchCustomersByAddress(String address) {
+        List<Customer> customersByAddress1 = customerRepository.findCustomersByAddress(address);
+        List<CustomerDto> customerDtos = new ArrayList<>();
+        for (Customer cus:customersByAddress1) {
+            customerDtos.add(modelMapper.map(cus,CustomerDto.class));
+        }
+        return customerDtos;
+    }
+
+    @Override
+    public List<CustomerDto> searchCustomersByAddressContaining(String address) {
+        List<Customer> cus = customerRepository.findCustomersByAddressContaining(address);
+        List<CustomerDto> customerDtoList = new ArrayList<>();
+        for (Customer c : cus) {
+            customerDtoList.add(modelMapper.map(c, CustomerDto.class));
+
+        }
+
+        return customerDtoList;
+    }
 }

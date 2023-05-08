@@ -12,5 +12,8 @@ public interface CustomerService {
     CustomerDto searchCustomerByID(String id);
     CustomerDto SearchCustomerByAddress(String address);
     CustomerDto SearchCustomerByName(String name);
+    List<CustomerDto> searchCustomersByAddress(String address);
+
+    List<CustomerDto> searchCustomersByAddressContaining(String address);
 
 }
